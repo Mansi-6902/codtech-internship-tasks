@@ -1,0 +1,162 @@
+##Technical Report: VAPT Toolkit v1.0
+
+Author: Mansi Gharat
+Version: 1.0
+Report Date: 26 May 2025
+1. Overview
+
+This report outlines the design, functionality, and technical aspects of the VAPT Toolkit v1.0, a modular penetration testing toolkit designed for ethical hacking and security assessments. It combines multiple tools into a single Python-based CLI framework, offering features such as port scanning, banner grabbing, brute-force attacks (FTP and SSH), and directory fuzzing.
+2. Toolkit Components
+2.1. Banner
+
+    Displays an ASCII-art logo and author information using ANSI color codes.
+
+    Purpose: Aesthetic branding and quick recognition.
+
+2.2. Port Scanner
+
+File/Function: port_scanner()
+Modules Used: socket, threading, queue
+
+Purpose: Scans a range of ports on a specified IP/domain to detect open TCP ports.
+
+Features:
+
+    Accepts custom port range (e.g., 20–80).
+
+    Multithreaded with dynamic thread management (up to 100 threads).
+
+    Reports open, closed, or errored ports with color-coded output.
+
+2.3. Banner Grabber
+
+File/Function: banner_grab()
+Modules Used: socket, requests
+
+Purpose: Retrieves service banners or HTTP headers from a specific IP and port.
+
+Capabilities:
+
+    Handles standard services (e.g., FTP, SSH) via socket.
+
+    For web ports (80/443), fetches and displays HTTP headers using requests.
+
+2.4. FTP Brute-Force Tool
+
+File/Function: ftp_brute_force()
+Modules Used: ftplib
+
+Purpose: Attempts to brute-force FTP login using a list of usernames and a password wordlist.
+
+Key Features:
+
+    Iterates over all combinations of given usernames and passwords.
+
+    Successful logins are logged and displayed in green.
+
+    Graceful error handling for permission denials and timeouts.
+
+2.5. SSH Brute-Force Tool
+
+File/Function: ssh_brute_force()
+Modules Used: paramiko
+
+Purpose: Brute-forces SSH login credentials using usernames and a password list.
+
+Key Features:
+
+    Automatically adds host keys using Paramiko’s policy.
+
+    Proper handling of common SSH exceptions.
+
+    Efficient connection timeout and resource cleanup.
+
+2.6. Directory Fuzzer
+
+File/Function: directory_fuzzer()
+Modules Used: requests, concurrent.futures
+
+Purpose: Detects accessible paths and directories on a web server using a wordlist.
+
+Functionality:
+
+    Constructs full URLs from base URL and path list.
+
+    Handles various HTTP responses:
+
+        200 OK (FOUND)
+
+        3xx (REDIRECT)
+
+        403 (FORBIDDEN)
+
+    Writes detailed results to directory_fuzz_report.txt.
+
+3. Supporting Functionality
+get_usernames()
+
+    Prompts for either a single username or a list from a file.
+
+    Robust error handling for file input.
+
+Main Menu System
+
+    Command-line interface offering numbered tool selection.
+
+    Allows users to choose between all six core functions, including graceful exit.
+
+4. Technical Strengths
+
+    Concurrency: Uses threading and ThreadPoolExecutor for performance and responsiveness.
+
+    Color-coded CLI: Enhances readability with ANSI color codes.
+
+    Modularity: Each tool is a function, easy to extend or integrate.
+
+    Error Handling: Catches common exceptions, improving user experience.
+
+    Report Generation: Directory fuzzing results saved for offline review.
+
+5. Dependencies
+
+The toolkit requires the following Python modules:
+
+    socket (built-in)
+
+    ftplib (built-in)
+
+    paramiko (pip install paramiko)
+
+    requests (pip install requests)
+
+    concurrent.futures (built-in for Python 3.2+)
+
+6. Usage Recommendations
+
+    Port Scanner: Use for discovering live services.
+
+    Banner Grabber: Useful for fingerprinting services and identifying vulnerabilities.
+
+    FTP/SSH Brute Forcer: Should only be used in ethical engagements or test environments.
+
+    Directory Fuzzer: Ideal for discovering hidden admin panels, APIs, and login pages.
+
+7. Security & Legal Notice
+
+    Disclaimer: This toolkit is intended for educational purposes and authorized penetration testing only. Unauthorized use against systems without permission is illegal and unethical.
+
+8. Future Enhancements (Suggested)
+
+    Add support for HTTPS directory fuzzing verification.
+
+    Include output logging for all tools.
+
+    Integrate with argparse for CLI automation.
+
+    Add progress bars (e.g., with tqdm).
+
+    Improve brute-force efficiency with multithreading.
+
+9. Conclusion
+
+The VAPT Toolkit v1.0 provides a powerful yet user-friendly CLI interface for basic penetration testing tasks. It serves as a good starting point for budding security researchers and red teamers to understand core offensive concepts through practical tools.
